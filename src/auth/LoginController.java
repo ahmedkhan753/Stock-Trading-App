@@ -1,4 +1,4 @@
-package auth;
+package stockapp.src.auth;
 
 public class LoginController {
     
