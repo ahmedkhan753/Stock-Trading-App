@@ -4,47 +4,47 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 /**
- * Utility class for managing the connection to the Oracle 23ai database.
- * This class handles the JDBC driver loading and connection lifecycle.
+ * Standard utility class for managing the connection to the MySQL database.
+ * This class provides a static method to obtain a database Connection object,
+ * which is required by all DAO classes (like UserDAO).
  */
 public class DatabaseConnection {
 
     // --- 1. JDBC Driver Class ---
-    // The Oracle driver class name
-    private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
+    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
-    // --- 2. Connection Details (Customize these for your Oracle 23ai setup) ---
+    // --- 2. Connection Details (Set as final static constants) ---
 
-    // Standard URL format for Oracle 23ai/XE:
-    // "jdbc:oracle:thin:@//<host>:<port>/<service_name>"
-    private static final String URL = "jdbc:oracle:thin:@//localhost:1521/FREEPDB1";
-    // If you are using Oracle Free (23c), the service name might be 'FREE' or 'XEPDB1'. Check your DBeaver connection settings.
-
-    private static final String USER = "system"; 
-    private static final String PASS = "newpass123";
+    private static final String URL = "jdbc:mysql://localhost:3306/stockapp?serverTimezone=UTC";
+    private static final String USER = "root";
+    private static final String PASS = "strongpassword";
 
     /**
-     * Attempts to establish a connection to the Oracle database.
+     * Attempts to establish a connection to the MySQL database.
      * @return A valid Connection object, or null if connection fails.
      */
     public static Connection getConnection() {
         Connection connection = null;
         try {
-            // Load the JDBC driver (legacy step, but good practice)
+            // Explicitly load the driver (though often not needed, it ensures visibility)
             Class.forName(DRIVER);
 
-            // Establish the connection
+            // Establish the connection using the static credentials
             connection = DriverManager.getConnection(URL, USER, PASS);
-            System.out.println("Connection to Oracle successful!");
             return connection;
 
         } catch (ClassNotFoundException e) {
-            System.err.println("ERROR: Oracle JDBC Driver not found in the classpath!");
+            System.err.println("FATAL ERROR: MySQL JDBC Driver not found. Check your classpath!");
             e.printStackTrace();
             return null;
+
         } catch (SQLException e) {
-            System.err.println("ERROR: Database connection failed!");
+            System.err.println("ERROR: Database connection failed.");
             System.err.println("SQL State: " + e.getSQLState());
             System.err.println("Message: " + e.getMessage());
             e.printStackTrace();
@@ -53,7 +53,8 @@ public class DatabaseConnection {
     }
 
     /**
-     * Safely closes a database connection.
+     * Safely closes a database connection. This is good practice but less critical
+     * when using try-with-resources in the DAOs.
      * @param conn The Connection object to close.
      */
     public static void closeConnection(Connection conn) {
@@ -62,7 +63,6 @@ public class DatabaseConnection {
                 conn.close();
             } catch (SQLException e) {
                 System.err.println("Error closing connection: " + e.getMessage());
-                // Don't rethrow, just log the error
             }
         }
     }

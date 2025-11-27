@@ -1,15 +1,25 @@
 package stockapp.src.models;
 
+import java.math.BigDecimal;
+
 public class User {
 
     // Attributes For the user
     private int id;
     private String username;
     private String password;
-    private double balance;
+    private BigDecimal balance;
+
+    /**
+     * Mandatory no-argument constructor.
+     * This is required when the LoginController calls 'new User()'
+     * before setting properties using setters.
+     */
+    public User() {
+    }
 
     // Constructor for the user
-    public User(int id, String username, String password, double balance) {
+    public User(int id, String username, String password, BigDecimal balance) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -35,10 +45,10 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public double getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
-    public void setBalance(double balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 }
