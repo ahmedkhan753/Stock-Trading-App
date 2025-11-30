@@ -1,7 +1,7 @@
-package stockapp.src.dao;
+package stockapp.dao;
 
-import stockapp.src.models.Stock;
-import stockapp.src.DatabaseConnection;
+import stockapp.models.Stock;
+import stockapp.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

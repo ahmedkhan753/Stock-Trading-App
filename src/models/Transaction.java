@@ -1,4 +1,4 @@
-package stockapp.src.models;
+package stockapp.models;
 import java.sql.Timestamp;
 
 public class Transaction {

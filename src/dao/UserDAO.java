@@ -1,8 +1,8 @@
-package stockapp.src.dao;
+package stockapp.dao;
 
 // ALL NECESSARY IMPORTS
-import stockapp.src.DatabaseConnection;
-import stockapp.src.models.User; // Import the new User Model
+import stockapp.DatabaseConnection;
+import stockapp.models.User; // Import the new User Model
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -111,5 +111,51 @@ public class UserDAO {
             }
         }
         return null; // Login failed (user not found or password mismatch)
+    }
+
+    /**
+     * Retrieves a User by ID.
+     * @param userID The user's ID
+     * @return The User object if found, otherwise null.
+     */
+    public User getUserById(int userID) {
+        String sql = "SELECT id, username, password, balance FROM users WHERE id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, userID);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapRowToUser(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Database error retrieving user by ID: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Updates user's balance.
+     * @param userID The user's ID
+     * @param newBalance The new balance
+     * @return true if update successful, false otherwise
+     */
+    public boolean updateUserBalance(int userID, BigDecimal newBalance) {
+        String sql = "UPDATE users SET balance = ? WHERE id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setBigDecimal(1, newBalance);
+            preparedStatement.setInt(2, userID);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.err.println("Database error updating user balance: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
     }
 }

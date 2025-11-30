@@ -1,4 +1,4 @@
-package stockapp.src.auth;
+package stockapp.auth;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,9 +12,9 @@ import javafx.scene.paint.Color;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
-import stockapp.src.dao.UserDAO;
-import stockapp.src.models.User;
-import stockapp.src.auth.DashboardController; // Must be imported
+import stockapp.dao.UserDAO;
+import stockapp.models.User;
+import stockapp.auth.DashboardController; // Must be imported
 import java.io.IOException;
 import java.math.BigDecimal;
 

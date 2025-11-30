@@ -1,4 +1,4 @@
-package stockapp.src.models;
+package stockapp.models;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleDoubleProperty;

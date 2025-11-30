@@ -1,5 +1,152 @@
-package stockapp.src.dao;
+package stockapp.dao;
 
+import stockapp.DatabaseConnection;
+import stockapp.models.Portfolio;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Data Access Object for Portfolio entity.
+ * Handles CRUD operations for user portfolios.
+ */
 public class PortfolioDAO {
     
+    private static final String INSERT_PORTFOLIO_SQL = 
+        "INSERT INTO portfolio (userID, stockID, quantity, avgPrice) VALUES (?, ?, ?, ?)";
+    
+    private static final String SELECT_PORTFOLIO_BY_USER_SQL = 
+        "SELECT id, userID, stockID, quantity, avgPrice FROM portfolio WHERE userID = ?";
+    
+    private static final String SELECT_PORTFOLIO_BY_USER_AND_STOCK_SQL = 
+        "SELECT id, userID, stockID, quantity, avgPrice FROM portfolio WHERE userID = ? AND stockID = ?";
+    
+    private static final String UPDATE_PORTFOLIO_SQL = 
+        "UPDATE portfolio SET quantity = ?, avgPrice = ? WHERE id = ?";
+    
+    private static final String DELETE_PORTFOLIO_SQL = 
+        "DELETE FROM portfolio WHERE id = ?";
+    
+    /**
+     * Maps a ResultSet row to a Portfolio object.
+     */
+    private Portfolio mapRowToPortfolio(ResultSet rs) throws SQLException {
+        int userID = rs.getInt("userID");
+        int stockID = rs.getInt("stockID");
+        int quantity = rs.getInt("quantity");
+        int id = rs.getInt("id");
+        double avgPrice = rs.getDouble("avgPrice");
+        
+        return new Portfolio(userID, stockID, quantity, id, avgPrice);
+    }
+    
+    /**
+     * Adds a new stock to user's portfolio.
+     */
+    public boolean addToPortfolio(int userID, int stockID, int quantity, double avgPrice) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(INSERT_PORTFOLIO_SQL)) {
+            
+            stmt.setInt(1, userID);
+            stmt.setInt(2, stockID);
+            stmt.setInt(3, quantity);
+            stmt.setDouble(4, avgPrice);
+            
+            int rowsInserted = stmt.executeUpdate();
+            return rowsInserted > 0;
+        } catch (SQLException e) {
+            System.err.println("ERROR: Failed to add portfolio entry: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    /**
+     * Retrieves all portfolio entries for a user.
+     */
+    public List<Portfolio> getPortfolioByUser(int userID) {
+        List<Portfolio> portfolios = new ArrayList<>();
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(SELECT_PORTFOLIO_BY_USER_SQL)) {
+            
+            stmt.setInt(1, userID);
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                portfolios.add(mapRowToPortfolio(rs));
+            }
+            rs.close();
+        } catch (SQLException e) {
+            System.err.println("ERROR: Failed to retrieve portfolio: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return portfolios;
+    }
+    
+    /**
+     * Retrieves a specific portfolio entry for a user and stock.
+     */
+    public Portfolio getPortfolioByUserAndStock(int userID, int stockID) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(SELECT_PORTFOLIO_BY_USER_AND_STOCK_SQL)) {
+            
+            stmt.setInt(1, userID);
+            stmt.setInt(2, stockID);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                Portfolio portfolio = mapRowToPortfolio(rs);
+                rs.close();
+                return portfolio;
+            }
+            rs.close();
+        } catch (SQLException e) {
+            System.err.println("ERROR: Failed to retrieve portfolio entry: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    /**
+     * Updates a portfolio entry with new quantity and average price.
+     */
+    public boolean updatePortfolio(int portfolioID, int quantity, double avgPrice) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(UPDATE_PORTFOLIO_SQL)) {
+            
+            stmt.setInt(1, quantity);
+            stmt.setDouble(2, avgPrice);
+            stmt.setInt(3, portfolioID);
+            
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            System.err.println("ERROR: Failed to update portfolio: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    /**
+     * Deletes a portfolio entry.
+     */
+    public boolean deletePortfolio(int portfolioID) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(DELETE_PORTFOLIO_SQL)) {
+            
+            stmt.setInt(1, portfolioID);
+            
+            int rowsDeleted = stmt.executeUpdate();
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            System.err.println("ERROR: Failed to delete portfolio: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

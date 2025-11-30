@@ -1,4 +1,4 @@
-package stockapp.src.models;
+package stockapp.models;
 
 public class Portfolio {
     private int userID;
