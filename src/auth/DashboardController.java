@@ -1,4 +1,4 @@
-package stockapp.auth;
+package stockapp.src.auth;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,9 +12,11 @@ import javafx.event.ActionEvent;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
-import stockapp.models.User;
-import stockapp.models.Stock;
-import stockapp.dao.StockDAO;
+import stockapp.src.models.User;
+import stockapp.src.models.Stock;
+import stockapp.src.dao.StockDAO;
+import stockapp.src.services.PortfolioService;
+
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -185,6 +187,7 @@ public class DashboardController {
         Stock selected = stockTableView.getSelectionModel().getSelectedItem();
         if (selected != null) {
             System.out.println("Open BUY modal for: " + selected.getTicker());
+
             // TODO: Next step: Open the Trade Modal
         }
     }

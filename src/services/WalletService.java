@@ -1,7 +1,7 @@
-package stockapp.services;
+package stockapp.src.services;
 
-import stockapp.dao.UserDAO;
-import stockapp.models.User;
+import stockapp.src.dao.UserDAO;
+import stockapp.src.models.User;
 import java.math.BigDecimal;
 
 /**

@@ -1,4 +1,4 @@
-package stockapp.models;
+package stockapp.src.models;
 
 import java.math.BigDecimal;
 

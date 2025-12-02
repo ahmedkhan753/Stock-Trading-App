@@ -1,9 +1,9 @@
-package stockapp.services;
+package stockapp.src.services;
 
-import stockapp.dao.PortfolioDAO;
-import stockapp.dao.StockDAO;
-import stockapp.models.Portfolio;
-import stockapp.models.Stock;
+import stockapp.src.dao.PortfolioDAO;
+import stockapp.src.dao.StockDAO;
+import stockapp.src.models.Portfolio;
+import stockapp.src.models.Stock;
 import java.util.List;
 
 /**

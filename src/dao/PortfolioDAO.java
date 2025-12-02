@@ -1,7 +1,7 @@
-package stockapp.dao;
+package stockapp.src.dao;
 
-import stockapp.DatabaseConnection;
-import stockapp.models.Portfolio;
+import stockapp.src.DatabaseConnection;
+import stockapp.src.models.Portfolio;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,19 +17,19 @@ import java.util.List;
 public class PortfolioDAO {
     
     private static final String INSERT_PORTFOLIO_SQL = 
-        "INSERT INTO portfolio (userID, stockID, quantity, avgPrice) VALUES (?, ?, ?, ?)";
+        "INSERT INTO portfolios (user_id, stock_id, quantity, average_price) VALUES (?, ?, ?, ?)";
     
     private static final String SELECT_PORTFOLIO_BY_USER_SQL = 
-        "SELECT id, userID, stockID, quantity, avgPrice FROM portfolio WHERE userID = ?";
+        "SELECT id, user_id, stock_id, quantity, average_price FROM portfolios WHERE user_id = ?";
     
     private static final String SELECT_PORTFOLIO_BY_USER_AND_STOCK_SQL = 
-        "SELECT id, userID, stockID, quantity, avgPrice FROM portfolio WHERE userID = ? AND stockID = ?";
+        "SELECT id, user_id, stock_id, quantity, average_price FROM portfolios WHERE user_id = ? AND stock_id = ?";
     
     private static final String UPDATE_PORTFOLIO_SQL = 
-        "UPDATE portfolio SET quantity = ?, avgPrice = ? WHERE id = ?";
+        "UPDATE portfolios SET quantity = ?, average_price = ? WHERE id = ?";
     
     private static final String DELETE_PORTFOLIO_SQL = 
-        "DELETE FROM portfolio WHERE id = ?";
+        "DELETE FROM portfolios WHERE id = ?";
     
     /**
      * Maps a ResultSet row to a Portfolio object.

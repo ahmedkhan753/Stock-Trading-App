@@ -1,4 +1,4 @@
-package stockapp.utils;
+package stockapp.src.utils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

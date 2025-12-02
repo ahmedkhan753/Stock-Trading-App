@@ -1,4 +1,4 @@
-package stockapp.utils;
+package stockapp.src.utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

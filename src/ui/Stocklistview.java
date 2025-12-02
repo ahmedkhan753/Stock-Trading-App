@@ -1,4 +1,4 @@
-package stockapp.ui;
+package stockapp.src.ui;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,7 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
-import stockapp.models.Stock;
+import stockapp.src.models.Stock;
 import java.util.List;
 
 /**

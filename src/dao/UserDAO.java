@@ -1,8 +1,8 @@
-package stockapp.dao;
+package stockapp.src.dao;
 
 // ALL NECESSARY IMPORTS
-import stockapp.DatabaseConnection;
-import stockapp.models.User; // Import the new User Model
+import stockapp.src.DatabaseConnection;
+import stockapp.src.models.User; // Import the new User Model
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

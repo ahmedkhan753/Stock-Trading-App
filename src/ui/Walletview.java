@@ -1,4 +1,4 @@
-package stockapp.ui;
+package stockapp.src.ui;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

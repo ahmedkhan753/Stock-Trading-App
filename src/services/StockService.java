@@ -1,7 +1,7 @@
-package stockapp.services;
+package stockapp.src.services;
 
-import stockapp.dao.StockDAO;
-import stockapp.models.Stock;
+import stockapp.src.dao.StockDAO;
+import stockapp.src.models.Stock;
 import java.util.List;
 import java.util.stream.Collectors;
 

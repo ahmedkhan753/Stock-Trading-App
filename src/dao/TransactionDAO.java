@@ -1,7 +1,7 @@
-package stockapp.dao;
+package stockapp.src.dao;
 
-import stockapp.DatabaseConnection;
-import stockapp.models.Transaction;
+import stockapp.src.DatabaseConnection;
+import stockapp.src.models.Transaction;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,13 +17,13 @@ import java.util.List;
 public class TransactionDAO {
     
     private static final String INSERT_TRANSACTION_SQL = 
-        "INSERT INTO transactions (userID, stockID, quantity, price, timestamp, type) VALUES (?, ?, ?, ?, ?, ?)";
+        "INSERT INTO transactions (user_id, stock_id, quantity, price, timestamp, type) VALUES (?, ?, ?, ?, ?, ?)";
     
     private static final String SELECT_TRANSACTIONS_BY_USER_SQL = 
-        "SELECT id, userID, stockID, quantity, price, timestamp, type FROM transactions WHERE userID = ? ORDER BY timestamp DESC";
+        "SELECT id, user_id stock_id, quantity, price, timestamp, type FROM transactions WHERE user_id = ? ORDER BY timestamp DESC";
     
     private static final String SELECT_ALL_TRANSACTIONS_SQL = 
-        "SELECT id, userID, stockID, quantity, price, timestamp, type FROM transactions ORDER BY timestamp DESC";
+        "SELECT id, user_id, stock_id, quantity, price, timestamp, type FROM transactions ORDER BY timestamp DESC";
     
     /**
      * Maps a ResultSet row to a Transaction object.

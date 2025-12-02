@@ -1,7 +1,7 @@
-package stockapp.services;
+package stockapp.src.services;
 
-import stockapp.dao.UserDAO;
-import stockapp.models.User;
+import stockapp.src.dao.UserDAO;
+import stockapp.src.models.User;
 import java.math.BigDecimal;
 
 /**
@@ -40,7 +40,7 @@ public class AuthService {
         }
         
         // Check if user already exists
-        User existingUser = userDAO.getUserByUsername(username);
+        User existingUser = userDAO.findUserByUsername(username);
         if (existingUser != null) {
             System.err.println("ERROR: Username already exists");
             return null;
@@ -55,7 +55,7 @@ public class AuthService {
         boolean registered = userDAO.registerUser(newUser);
         if (registered) {
             // Retrieve the registered user to get the ID
-            return userDAO.getUserByUsername(username);
+            return userDAO.findUserByUsername(username);
         }
         return null;
     }
@@ -78,7 +78,7 @@ public class AuthService {
         }
         
         // Retrieve user from database
-        User user = userDAO.getUserByUsername(username);
+        User user = userDAO.findUserByUsername(username);
         if (user == null) {
             System.err.println("ERROR: User not found");
             return null;
@@ -99,6 +99,6 @@ public class AuthService {
      * @return The User object if found, null otherwise
      */
     public User getUserByUsername(String username) {
-        return userDAO.getUserByUsername(username);
+        return userDAO.findUserByUsername(username);
     }
 }

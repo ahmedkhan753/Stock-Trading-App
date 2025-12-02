@@ -1,11 +1,11 @@
-package stockapp.ui;
+package stockapp.src.ui;
 
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import stockapp.models.Stock;
+import stockapp.src.models.Stock;
 import java.util.List;
 
 /**
