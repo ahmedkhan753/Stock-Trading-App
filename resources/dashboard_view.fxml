@@ -5,91 +5,91 @@
 <?import javafx.scene.text.Font?>
 
 
-<BorderPane fx:id="mainPane" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #f8fafc;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stockapp.src.auth.DashboardController">
+<BorderPane fx:id="mainPane" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #0F0F0F;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stockapp.src.auth.DashboardController">
     <top>
         <!-- Top Bar: App Title, User Info, and Logout -->
-        <HBox alignment="CENTER_LEFT" prefHeight="60.0" style="-fx-background-color: #334155; -fx-padding: 10;" spacing="10">
-            <Label text="Stock Trader App" textFill="WHITE">
+        <HBox alignment="CENTER_LEFT" prefHeight="60.0" style="-fx-background-color: #1F1F1F; -fx-padding: 10; -fx-border-color: #F7C600; -fx-border-width: 0 0 2 0;" spacing="10">
+            <Label text="Stock Trader App" textFill="#F7C600">
                 <font>
                     <Font name="System Bold" size="24.0" />
                 </font>
             </Label>
             <HBox HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT" spacing="15.0">
-                <Label fx:id="userWelcomeLabel" text="Welcome, [User]!" textFill="#94a3b8">
+                <Label fx:id="userWelcomeLabel" text="Welcome, [User]!" textFill="#B0B0B0">
                     <font>
                         <Font size="16.0" />
                     </font>
                 </Label>
 
                 <!-- Inline button styling -->
-                <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-cursor: HAND; -fx-font-weight: bold; -fx-padding: 6 12; -fx-background-radius: 5;" text="Logout" />
+                <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: #EF4444; -fx-text-fill: white; -fx-cursor: HAND; -fx-font-weight: bold; -fx-padding: 6 12; -fx-background-radius: 5;" text="Logout" />
             </HBox>
         </HBox>
     </top>
     <left>
 
         <!-- Left Sidebar: Portfolio Summary and Navigation -->
-        <VBox prefWidth="250.0" style="-fx-background-color: #1e293b; -fx-padding: 15; -fx-spacing: 20;" spacing="20.0">
-            <Label text="Portfolio Summary" textFill="WHITE">
+        <VBox prefWidth="250.0" style="-fx-background-color: #1F1F1F; -fx-padding: 15; -fx-spacing: 20; -fx-border-color: #F7C600; -fx-border-width: 0 2 0 0;" spacing="20.0">
+            <Label text="Portfolio Summary" textFill="#F7C600">
                 <font>
                     <Font name="System Bold" size="18.0" />
                 </font>
             </Label>
-            <Separator />
+            <Separator style="-fx-border-color: #333333;" />
 
             <GridPane hgap="10" vgap="10">
                 <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 </columnConstraints>
-                <Label text="Cash Balance:" textFill="#94a3b8" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Label text="Cash Balance:" textFill="#B0B0B0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                 <Label fx:id="cashBalanceLabel" text="100,000.00" textFill="#22c55e" GridPane.columnIndex="1" GridPane.rowIndex="0">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-                <Label text="Total Value:" textFill="#94a3b8" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                <Label fx:id="totalValueLabel" text="100,000.00" textFill="#eab308" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Label text="Total Value:" textFill="#B0B0B0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <Label fx:id="totalValueLabel" text="100,000.00" textFill="#F7C600" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-                <Label text="P/L Today:" textFill="#94a3b8" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Label text="P/L Today:" textFill="#B0B0B0" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                 <Label fx:id="profitLossLabel" text="+0.00%" textFill="#22c55e" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
             </GridPane>
-            <Separator />
+            <Separator style="-fx-border-color: #333333;" />
 
 
             <!-- Navigation Buttons -->
             <VBox spacing="10">
                 <!-- Inline button styling -->
-                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-cursor: HAND; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 5;" text="View Portfolio" onAction="#showPortfolio" />
-                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #475569; -fx-text-fill: white; -fx-cursor: HAND; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 5;" text="All Transactions" onAction="#showTransactions" />
-                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #475569; -fx-text-fill: white; -fx-cursor: HAND; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 5;" text="Deposit / Withdraw" onAction="#showWallet" />
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #F7C600; -fx-text-fill: #0F0F0F; -fx-cursor: HAND; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 5;" text="View Portfolio" onAction="#showPortfolio" />
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #333333; -fx-text-fill: #F7C600; -fx-cursor: HAND; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 5; -fx-border-color: #F7C600; -fx-border-width: 1;" text="All Transactions" onAction="#showTransactions" />
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #333333; -fx-text-fill: #F7C600; -fx-cursor: HAND; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 5; -fx-border-color: #F7C600; -fx-border-width: 1;" text="Deposit / Withdraw" onAction="#showWallet" />
             </VBox>
         </VBox>
     </left>
     <center>
 
         <!-- Center Content: Stock List and Trading Form -->
-        <VBox spacing="10.0" style="-fx-padding: 15; -fx-background-color: #f8fafc;">
-            <Label text="Market Watch" style="-fx-text-fill: #1e293b;">
+        <VBox spacing="10.0" style="-fx-padding: 15; -fx-background-color: #0F0F0F;">
+            <Label text="Market Watch" style="-fx-text-fill: #F7C600;">
                 <font>
                     <Font name="System Bold" size="20.0" />
                 </font>
             </Label>
             <HBox spacing="10.0" VBox.vgrow="NEVER">
-                <TextField fx:id="searchField" promptText="Search stocks (e.g., GOOGL, AAPL)" HBox.hgrow="ALWAYS" style="-fx-border-color: #cbd5e1; -fx-border-radius: 5; -fx-padding: 8;" />
+                <TextField fx:id="searchField" promptText="Search stocks (e.g., GOOGL, AAPL)" HBox.hgrow="ALWAYS" style="-fx-border-color: #F7C600; -fx-border-radius: 5; -fx-padding: 8; -fx-control-inner-background: #1F1F1F; -fx-text-fill: #FFFFFF; -fx-prompt-text-fill: #666666;" />
                 <!-- Inline button styling -->
                 <Button mnemonicParsing="false" style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-cursor: HAND; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 5;" text="Refresh" onAction="#refreshStockList" />
             </HBox>
 
             <!-- TableView to display market stocks -->
-            <TableView fx:id="stockTableView" VBox.vgrow="ALWAYS">
+            <TableView fx:id="stockTableView" style="-fx-control-inner-background: #1F1F1F; -fx-table-cell-border-color: #333333; -fx-text-fill: #FFFFFF;" VBox.vgrow="ALWAYS">
                 <columns>
                     <TableColumn fx:id="tickerColumn" prefWidth="100.0" text="Ticker" />
                     <TableColumn fx:id="nameColumn" prefWidth="300.0" text="Company Name" />
@@ -102,9 +102,9 @@
             </TableView>
 
             <!-- Trade Action Bar -->
-            <HBox alignment="CENTER" spacing="10.0" style="-fx-padding: 10; -fx-background-color: #e2e8f0; -fx-border-radius: 5;">
-                <Label text="Selected Stock:" />
-                <Label fx:id="selectedStockLabel" text="N/A" style="-fx-font-weight: bold;" />
+            <HBox alignment="CENTER" spacing="10.0" style="-fx-padding: 10; -fx-background-color: #1F1F1F; -fx-border-radius: 5; -fx-border-color: #F7C600; -fx-border-width: 1;">
+                <Label text="Selected Stock:" style="-fx-text-fill: #F7C600;" />
+                <Label fx:id="selectedStockLabel" text="N/A" style="-fx-font-weight: bold; -fx-text-fill: #FFFFFF;" />
                 <Region HBox.hgrow="ALWAYS" />
                 <!-- Inline button styling -->
                 <Button mnemonicParsing="false" onAction="#handleBuyStock" style="-fx-background-color: #22c55e; -fx-text-fill: white; -fx-cursor: HAND; -fx-font-weight: bold; -fx-padding: 8 20; -fx-background-radius: 5;" text="BUY" disable="true" fx:id="buyButton" />

@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.collections.FXCollections;
@@ -14,7 +15,9 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
 import stockapp.src.models.User;
 import stockapp.src.models.Stock;
+import stockapp.src.models.Transaction;
 import stockapp.src.dao.StockDAO;
+import stockapp.src.dao.TransactionDAO;
 import stockapp.src.services.PortfolioService;
 
 import java.io.IOException;
@@ -48,7 +51,9 @@ public class DashboardController {
     private User currentUser;
     // Initialize the DAO to access database data
     private final StockDAO stockDAO = new StockDAO();
+    private final TransactionDAO transactionDAO = new TransactionDAO();
     private ObservableList<Stock> marketData;
+    private VBox currentContent; // Track current center pane content
 
     /**
      * Initializes the controller. This is called immediately after the FXML is loaded.
@@ -95,8 +100,10 @@ public class DashboardController {
             super.updateItem(item, empty);
             if (empty || item == null) {
                 setText(null);
+                setStyle("");
             } else {
                 setText(formatter.format(item));
+                setStyle("-fx-text-fill: #FFFFFF;");
             }
         }
     }
@@ -121,7 +128,7 @@ public class DashboardController {
                 } else if (item < 0) {
                     setStyle("-fx-text-fill: #ef4444; -fx-font-weight: bold;"); // Red
                 } else {
-                    setStyle("-fx-text-fill: #0f172a;"); // Neutral
+                    setStyle("-fx-text-fill: #B0B0B0;"); // Neutral grey
                 }
             }
         }
@@ -217,6 +224,95 @@ public class DashboardController {
 
     // Placeholder navigation methods (to be implemented later)
     @FXML private void showPortfolio() { System.out.println("Navigating to Portfolio."); }
-    @FXML private void showTransactions() { System.out.println("Navigating to Transactions."); }
+    
+    @FXML private void showTransactions() {
+        System.out.println("Displaying Transactions for user: " + (currentUser != null ? currentUser.getUsername() : "Unknown"));
+        
+        // Create a new VBox for transactions content
+        VBox transactionPane = new VBox(15);
+        transactionPane.setStyle("-fx-padding: 15; -fx-background-color: #f8fafc;");
+        
+        // Title
+        Label titleLabel = new Label("Transaction History");
+        titleLabel.setStyle("-fx-text-fill: #1e293b; -fx-font-size: 20px; -fx-font-weight: bold;");
+        
+        // Create TableView for transactions
+        TableView<Transaction> transactionTable = new TableView<>();
+        
+        // Create columns
+        TableColumn<Transaction, Integer> idColumn = new TableColumn<>("ID");
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        idColumn.setPrefWidth(50);
+        
+        TableColumn<Transaction, String> typeColumn = new TableColumn<>("Type");
+        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        typeColumn.setPrefWidth(80);
+        typeColumn.setCellFactory(column -> new TableCell<Transaction, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item.toUpperCase());
+                    if ("BUY".equalsIgnoreCase(item)) {
+                        setStyle("-fx-text-fill: #22c55e; -fx-font-weight: bold;");
+                    } else if ("SELL".equalsIgnoreCase(item)) {
+                        setStyle("-fx-text-fill: #ef4444; -fx-font-weight: bold;");
+                    }
+                }
+            }
+        });
+        
+        TableColumn<Transaction, Integer> stockIdColumn = new TableColumn<>("Stock ID");
+        stockIdColumn.setCellValueFactory(new PropertyValueFactory<>("stockID"));
+        stockIdColumn.setPrefWidth(80);
+        
+        TableColumn<Transaction, Integer> quantityColumn = new TableColumn<>("Quantity");
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        quantityColumn.setPrefWidth(100);
+        
+        TableColumn<Transaction, Double> priceColumn = new TableColumn<>("Price");
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        priceColumn.setPrefWidth(100);
+        priceColumn.setCellFactory(column -> new TableCell<Transaction, Double>() {
+            private final DecimalFormat formatter = new DecimalFormat("$#,##0.00");
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(formatter.format(item));
+                }
+            }
+        });
+        
+        TableColumn<Transaction, Object> timestampColumn = new TableColumn<>("Date/Time");
+        timestampColumn.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
+        timestampColumn.setPrefWidth(150);
+        
+        transactionTable.getColumns().addAll(idColumn, typeColumn, stockIdColumn, quantityColumn, priceColumn, timestampColumn);
+        transactionTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        
+        // Load transactions from database
+        if (currentUser != null) {
+            ObservableList<Transaction> transactions = FXCollections.observableArrayList(
+                transactionDAO.getTransactionsByUser(currentUser.getId())
+            );
+            transactionTable.setItems(transactions);
+            System.out.println("Loaded " + transactions.size() + " transactions for user " + currentUser.getUsername());
+        }
+        
+        // Add components to pane
+        transactionPane.getChildren().addAll(titleLabel, transactionTable);
+        VBox.setVgrow(transactionTable, javafx.scene.layout.Priority.ALWAYS);
+        
+        // Update main pane center
+        mainPane.setCenter(transactionPane);
+        currentContent = transactionPane;
+    }
+    
     @FXML private void showWallet() { System.out.println("Opening Deposit/Withdrawal modal."); }
 }
