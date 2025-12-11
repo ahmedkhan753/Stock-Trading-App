@@ -17,6 +17,8 @@ import stockapp.src.models.User;
 import stockapp.src.auth.DashboardController; // Must be imported
 import java.io.IOException;
 import java.math.BigDecimal;
+import javafx.event.ActionEvent;
+import javafx.stage.Stage;
 
 public class LoginController {
 
@@ -62,6 +64,11 @@ public class LoginController {
 
             // Create the new scene and set it on the stage
             Scene scene = new Scene(root);
+            // apply theme if present
+            try {
+                String css = getClass().getResource("/styles/theme.css").toExternalForm();
+                scene.getStylesheets().add(css);
+            } catch (Exception ignored) {}
             stage.setScene(scene);
             stage.setTitle("Stock Trader: Dashboard");
             stage.show();
@@ -146,5 +153,12 @@ public class LoginController {
             messageLabel.setText("An unexpected error occurred during registration.");
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void goBack(ActionEvent event) {
+        // Close the window (acts as Back on login screen)
+        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        stage.close();
     }
 }

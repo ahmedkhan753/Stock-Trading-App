@@ -21,7 +21,7 @@ public class DatabaseConnection {
     // --- 2. Connection Details (Set as final static constants) ---
     private static final String URL = "jdbc:mysql://localhost:3306/stockapp?serverTimezone=UTC";
     private static final String USER = "root";
-    private static final String PASS = "12345678";
+    private static final String PASS = "strongpassword";
     /**
      * Attempts to establish a connection to the MySQL database.
      * @return A valid Connection object, or null if connection fails.

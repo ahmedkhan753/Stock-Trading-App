@@ -222,6 +222,25 @@ public class DashboardController {
         stage.show();
     }
 
+    @FXML
+    private void goBack(ActionEvent event) throws IOException {
+        // Navigate back to login/register screen
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/login_register.fxml"));
+        Parent root = loader.load();
+
+        Stage stage = (Stage) mainPane.getScene().getWindow();
+        Scene scene = new Scene(root, 400, 450);
+        // apply theme stylesheet if present
+        try {
+            String css = getClass().getResource("/styles/theme.css").toExternalForm();
+            scene.getStylesheets().add(css);
+        } catch (Exception ignored) {}
+
+        stage.setTitle("Stock Trader: Login & Register");
+        stage.setScene(scene);
+        stage.show();
+    }
+
     // Placeholder navigation methods (to be implemented later)
     @FXML private void showPortfolio() { System.out.println("Navigating to Portfolio."); }
     
@@ -230,14 +249,15 @@ public class DashboardController {
         
         // Create a new VBox for transactions content
         VBox transactionPane = new VBox(15);
-        transactionPane.setStyle("-fx-padding: 15; -fx-background-color: #f8fafc;");
+        transactionPane.getStyleClass().add("card");
         
         // Title
         Label titleLabel = new Label("Transaction History");
-        titleLabel.setStyle("-fx-text-fill: #1e293b; -fx-font-size: 20px; -fx-font-weight: bold;");
+        titleLabel.getStyleClass().add("title");
         
         // Create TableView for transactions
         TableView<Transaction> transactionTable = new TableView<>();
+        transactionTable.getStyleClass().add("table-view");
         
         // Create columns
         TableColumn<Transaction, Integer> idColumn = new TableColumn<>("ID");

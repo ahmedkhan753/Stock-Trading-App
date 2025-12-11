@@ -18,7 +18,15 @@ public class Main extends Application {
         try {
             // 1. Get the FXMLLoader instance.
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(LOGIN_FXML_PATH));
-            Scene scene = new Scene(fxmlLoader.load(), 400, 450);
+            javafx.scene.Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root, 400, 450);
+            // Apply global theme stylesheet if available
+            try {
+                String css = getClass().getResource("/styles/theme.css").toExternalForm();
+                scene.getStylesheets().add(css);
+            } catch (Exception ignored) {
+                // stylesheet missing — continue without it
+            }
             stage.setTitle("Stock Trader: Login & Register");
             stage.setScene(scene);
             stage.show();
