@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.io.IOException;
 
 /**
  * Main application class. This is the single entry point for the Stock Trader application.
