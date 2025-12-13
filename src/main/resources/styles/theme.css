@@ -1,0 +1,169 @@
+/* Global Dark Theme */
+.root {
+    -fx-background-color: #121212;
+    -fx-font-family: "Segoe UI", "Helvetica", sans-serif;
+    -fx-text-fill: #E0E0E0;
+}
+
+/* Typography */
+.label {
+    -fx-text-fill: #E0E0E0;
+    -fx-font-size: 14px;
+}
+
+.title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.muted {
+    -fx-text-fill: #9E9E9E;
+    -fx-font-size: 12px;
+}
+
+/* Cards / Containers */
+.card {
+    -fx-background-color: #1E1E1E;
+    -fx-background-radius: 8; /* equivalent to rounded-lg */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 4);
+    -fx-padding: 20;
+}
+
+/* Inputs */
+.text-field, .password-field {
+    -fx-background-color: #2C2C2C;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #757575;
+    -fx-background-radius: 4;
+    -fx-border-color: #424242;
+    -fx-border-radius: 4;
+    -fx-padding: 8 12;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #BB86FC; /* Material Purple Accent */
+    -fx-background-color: #333333;
+}
+
+/* Buttons */
+.button {
+    -fx-background-color: #333333;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+    -fx-transition: background-color 0.2s;
+}
+
+.button:hover {
+    -fx-background-color: #424242;
+}
+
+.button:pressed {
+    -fx-background-color: #212121;
+}
+
+/* Primary Action Button (Blue/Purple) */
+.primary {
+    -fx-background-color: #BB86FC;
+    -fx-text-fill: #000000;
+}
+
+.primary:hover {
+    -fx-background-color: #9969C7; /* Darker Purple */
+}
+
+/* Positive Action (Buy - Green) */
+.positive {
+    -fx-background-color: #1a4d2e; /* Darker green background */
+    -fx-border-color: #22c55e;
+    -fx-border-radius: 4;
+    -fx-text-fill: #22c55e;
+}
+
+.positive:hover {
+    -fx-background-color: #22c55e;
+    -fx-text-fill: #000000;
+}
+
+/* Negative Action (Sell/Logout - Red) */
+.negative {
+    -fx-background-color: #4f1c1c; /* Darker red background */
+    -fx-border-color: #ef4444;
+    -fx-border-radius: 4;
+    -fx-text-fill: #ef4444;
+}
+
+.negative:hover {
+    -fx-background-color: #ef4444;
+    -fx-text-fill: #FFFFFF;
+}
+
+/* Back Button (Subtle) */
+.back-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #9E9E9E;
+    -fx-underline: true;
+    -fx-font-size: 14px;
+    -fx-padding: 0;
+}
+
+.back-button:hover {
+    -fx-text-fill: #FFFFFF;
+}
+
+/* TableView Styling */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #1E1E1E;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #333333;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #9E9E9E;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER-LEFT;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: #E0E0E0;
+    -fx-padding: 10 5;
+    -fx-border-color: transparent;
+    -fx-alignment: CENTER-LEFT;
+}
+
+.table-row-cell {
+    -fx-background-color: #121212;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #1F1F1F;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #161616;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #333333;
+    -fx-text-fill: white;
+}
+
+.table-view .placeholder .label {
+    -fx-text-fill: #757575;
+}
+
+/* ScrollBar */
+.scroll-bar:vertical, .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #424242;
+    -fx-background-radius: 4;
+}
