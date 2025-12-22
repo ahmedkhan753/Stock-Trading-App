@@ -95,7 +95,6 @@ async function handleAddUser(e) {
 }
 
 async function loadAllUsers() {
-    const token = localStorage.getItem('token');
     const tbody = document.querySelector('#usersTable tbody');
 
     try {
@@ -106,39 +105,53 @@ async function loadAllUsers() {
         if (response.ok) {
             const users = await response.json();
 
-            tbody.innerHTML = users.map(user => `
+            if (!users || users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No users found</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = users.map(user => {
+                const isActive = user.isActive !== undefined ? user.isActive : user.active;
+                const userRole = user.role || 'USER';
+                const balance = user.balance ? (typeof user.balance === 'number' ? user.balance : user.balance.amount || 0) : 0;
+                
+                return `
                 <tr>
                     <td>${user.id}</td>
                     <td><strong>${user.username}</strong></td>
-                    <td>${formatCurrency(user.balance)}</td>
+                    <td>${formatCurrency(balance)}</td>
                     <td>
-                        <span style="background: ${user.role === 'ADMIN' ? '#FF1493' : '#4CAF50'}; 
+                        <span style="background: ${userRole === 'ADMIN' ? '#FF1493' : '#4CAF50'}; 
                                      color: white; padding: 5px 10px; border-radius: 5px; font-weight: bold;">
-                            ${user.role}
+                            ${userRole}
                         </span>
                     </td>
                     <td>
-                        <span style="background: ${user.isActive ? '#4CAF50' : '#F44336'}; 
+                        <span style="background: ${isActive ? '#4CAF50' : '#F44336'}; 
                                      color: white; padding: 5px 10px; border-radius: 5px;">
-                            ${user.isActive ? 'Active' : 'Inactive'}
+                            ${isActive ? 'Active' : 'Inactive'}
                         </span>
                     </td>
                     <td>
-                        <div class="action-buttons">
-                            <button class="btn-edit" onclick="editUser(${user.id})">
+                        <div class="action-buttons" style="display: flex; gap: 8px;">
+                            <button class="btn-edit" onclick="editUser(${user.id})" style="padding: 8px 12px; background: #2196F3; color: white; border: none; border-radius: 5px; cursor: pointer;">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
-                            <button class="btn-delete" onclick="deleteUser(${user.id})">
+                            <button class="btn-delete" onclick="deleteUser(${user.id})" style="padding: 8px 12px; background: #F44336; color: white; border: none; border-radius: 5px; cursor: pointer;">
                                 <i class="fas fa-trash"></i> Delete
                             </button>
                         </div>
                     </td>
                 </tr>
-            `).join('');
+            `;
+            }).join('');
+        } else {
+            console.error('Error response:', response.status);
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">Failed to load users (Status: ' + response.status + ')</td></tr>';
         }
     } catch (error) {
         console.error('Error loading users:', error);
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">Error loading users</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">Error loading users: ' + error.message + '</td></tr>';
     }
 }
 
@@ -469,23 +482,41 @@ function getStatusColor(status) {
 }
 
 function editUser(userId) {
-    // Find user data from the table
-    const row = document.querySelector(`tr:has(td:first-child:contains('${userId}'))`);
-    if (!row) {
-        alert('User not found');
+    // Get user data from the table
+    const tableBody = document.querySelector('#usersTable tbody');
+    const rows = tableBody.querySelectorAll('tr');
+    let userRow = null;
+    let rowData = null;
+
+    // Find the row for this user
+    for (let row of rows) {
+        const cells = row.querySelectorAll('td');
+        if (cells[0] && parseInt(cells[0].textContent) === userId) {
+            userRow = row;
+            const username = cells[1].textContent.trim();
+            const balanceText = cells[2].textContent.replace(/[$,]/g, '');
+            const balance = parseFloat(balanceText);
+            const roleCell = cells[3];
+            const role = roleCell.textContent.trim();
+            const statusCell = cells[4];
+            const status = statusCell.textContent.trim();
+            const isActive = status === 'Active';
+            
+            rowData = { username, balance, role, isActive };
+            break;
+        }
+    }
+
+    if (!rowData) {
+        alert('User not found in table');
         return;
     }
 
-    const cells = row.querySelectorAll('td');
-    const username = cells[1].textContent.trim();
-    const balanceText = cells[2].textContent.replace('$', '').replace(',', '');
-    const balance = parseFloat(balanceText);
-    const role = cells[3].textContent.trim();
-    const status = cells[4].textContent.trim();
-    const isActive = status === 'Active';
+    const { username, balance, role, isActive } = rowData;
 
     // Create edit modal
     const modal = document.createElement('div');
+    modal.id = 'editUserModal';
     modal.style.cssText = `
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center;
@@ -498,19 +529,19 @@ function editUser(userId) {
             <form id="editUserForm">
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px; font-weight: bold;">Username</label>
-                    <input type="text" id="editUsername" value="${username}" required style="width: 100%; padding: 10px; border: 2px solid var(--border-light); border-radius: 8px;">
+                    <input type="text" id="editUsername" value="${username}" required style="width: 100%; padding: 10px; border: 2px solid var(--border-light); border-radius: 8px; box-sizing: border-box;">
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px; font-weight: bold;">New Password (leave empty to keep current)</label>
-                    <input type="password" id="editPassword" placeholder="Enter new password" style="width: 100%; padding: 10px; border: 2px solid var(--border-light); border-radius: 8px;">
+                    <input type="password" id="editPassword" placeholder="Enter new password" style="width: 100%; padding: 10px; border: 2px solid var(--border-light); border-radius: 8px; box-sizing: border-box;">
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px; font-weight: bold;">Balance ($)</label>
-                    <input type="number" id="editBalance" value="${balance}" min="0" step="0.01" required style="width: 100%; padding: 10px; border: 2px solid var(--border-light); border-radius: 8px;">
+                    <input type="number" id="editBalance" value="${balance}" min="0" step="0.01" required style="width: 100%; padding: 10px; border: 2px solid var(--border-light); border-radius: 8px; box-sizing: border-box;">
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px; font-weight: bold;">Role</label>
-                    <select id="editRole" style="width: 100%; padding: 10px; border: 2px solid var(--border-light); border-radius: 8px;">
+                    <select id="editRole" style="width: 100%; padding: 10px; border: 2px solid var(--border-light); border-radius: 8px; box-sizing: border-box;">
                         <option value="USER" ${role === 'USER' ? 'selected' : ''}>User</option>
                         <option value="ADMIN" ${role === 'ADMIN' ? 'selected' : ''}>Admin</option>
                     </select>
@@ -521,8 +552,8 @@ function editUser(userId) {
                     </label>
                 </div>
                 <div style="display: flex; gap: 10px;">
-                    <button type="submit" class="btn-login" style="flex: 1;">Save Changes</button>
-                    <button type="button" onclick="this.closest('div').parentElement.remove()" style="flex: 1; padding: 12px; background: var(--danger-red); color: white; border: none; border-radius: 8px; cursor: pointer;">Cancel</button>
+                    <button type="submit" style="flex: 1; padding: 12px; background: #4CAF50; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">Save Changes</button>
+                    <button type="button" onclick="document.getElementById('editUserModal').remove()" style="flex: 1; padding: 12px; background: #F44336; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">Cancel</button>
                 </div>
             </form>
         </div>
@@ -557,14 +588,14 @@ function editUser(userId) {
 
             if (response.ok) {
                 alert('User updated successfully!');
-                modal.remove();
+                document.getElementById('editUserModal').remove();
                 loadAllUsers();
             } else {
                 alert('Failed to update user: ' + (data.message || 'Unknown error'));
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Error updating user');
+            alert('Error updating user: ' + error.message);
         }
     });
 }
