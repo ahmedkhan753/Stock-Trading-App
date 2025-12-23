@@ -1,4 +1,4 @@
-# 🎉 Stock Trading App - Web Migration Complete!
+# Stock Trading App
 
 ## 👋 Welcome!
 
